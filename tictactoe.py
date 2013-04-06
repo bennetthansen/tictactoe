@@ -30,7 +30,7 @@ def evenTurn(board, oddMoves, evenMoves):
                 print newboard
                 if isGameOver(newboard)==1:
                     return False
-                newoddMoves = oddMoves.copy
+                newoddMoves = oddMoves.copy()
                 newevenMoves = evenMoves-set([j])
                 if oddTurn(newboard, newoddMoves, newevenMoves) is True:
                     return True
