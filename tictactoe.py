@@ -1,8 +1,8 @@
 def oddTurn(board, oddMoves, evenMoves):
     """return True means odd has a winning strategy"""
     tupleBoard = tuple(board)
-    if knownBoards.has_key(tupleBoard):
-        return knownBoards.get(tupleBoard)
+    if tupleBoard in knownBoards:
+        return knownBoards[tupleBoard]
     for i in range(9):
         if board[i]==-100:
             for j in oddMoves:
@@ -24,8 +24,8 @@ def oddTurn(board, oddMoves, evenMoves):
 def evenTurn(board, oddMoves, evenMoves):
     """return True means odd wins no matter what even move"""
     tupleBoard = tuple(board)
-    if knownBoards.has_key(tupleBoard):
-        return knownBoards.get(tupleBoard)
+    if tupleBoard in knownBoards:
+        return knownBoards[tupleBoard]
     for i in range(9):
         if board[i]==-100:
             for j in evenMoves:
@@ -45,11 +45,12 @@ def evenTurn(board, oddMoves, evenMoves):
 def isGameOver(board):
     """return 0 for unfinished, 1 for win, 2 for tie"""
     global games
+    i1,i2,i3,i4,i5,i6,i7,i8,i9=board
     games += 1
-    if sum(board[0::3])==15 or sum(board[1::3])==15 or sum(board[2::3])==15 or sum(board[0:3])==15 or sum(board[3:6])==15 or sum(board[6:9])==15 or sum(board[0::4])==15 or sum(board[2:7:2])==15:
+    if i1+i2+i3==15 or i4+i5+i6==15 or i7+i8+i9==15 or i1+i4+i7==15 or i2+i5+i8==15 or i3+i6+i9==15 or i1+i5+i9==15 or i3+i5+i7==15:
         #print board
         return 1
-    if sum(board)>0:
+    if i1+i2+i3+i4+i5+i6+i7+i8+i9>0:
         return 2
     return 0
 
