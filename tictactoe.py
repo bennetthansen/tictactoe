@@ -10,8 +10,10 @@ def oddTurn(board, oddMoves, evenMoves):
                 newboard[i] = j
                 #print newboard
                 if isGameOver(newboard)==1:
+                    symmetries(tupleBoard, True)
                     return True
                 elif isGameOver(newboard)==2:
+                    symmetries(tupleBoard, False)
                     return False
                 newoddMoves = oddMoves-set([j])
                 newevenMoves = evenMoves.copy()
@@ -33,6 +35,7 @@ def evenTurn(board, oddMoves, evenMoves):
                 newboard[i] = j
                 #print newboard
                 if isGameOver(newboard)==1:
+                    symmetries(tupleBoard, False)
                     return False
                 newoddMoves = oddMoves.copy()
                 newevenMoves = evenMoves-set([j])
@@ -91,6 +94,7 @@ def runGame():
             print "No winning strategy for Player 1"
             break
         print p1Moves, p2Moves, oddWin, games
-        break
+
+runGame()
 
 #print oddTurn(board, oddMoves, evenMoves)
