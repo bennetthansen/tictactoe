@@ -3,6 +3,8 @@ def oddTurn(board, oddMoves, evenMoves):
     tupleBoard = tuple(board)
     if tupleBoard in knownBoards:
         return knownBoards[tupleBoard]
+    flag = False
+    minDepth = 100
     for i in range(9):
         if board[i]==-100:
             for j in oddMoves:
@@ -10,24 +12,31 @@ def oddTurn(board, oddMoves, evenMoves):
                 newboard[i] = j
                 #print newboard
                 if isGameOver(newboard)==1:
-                    symmetries(tupleBoard, True)
-                    return True
+                    #return True
+                    flag = True
+                    minDepth = 1
                 elif isGameOver(newboard)==2:
-                    symmetries(tupleBoard, False)
-                    return False
+                    #return False
+                    pass
                 newoddMoves = oddMoves-set([j])
                 newevenMoves = evenMoves.copy()
-                if evenTurn(newboard, newoddMoves, newevenMoves) is True:
-                    symmetries(tupleBoard, True)
-                    return True
-    symmetries(tupleBoard, False)
-    return False
+                result, depth = evenTurn(newboard, newoddMoves, newevenMoves)
+                if result is True:
+                    #return True
+                    flag = True
+                    if depth < minDepth:
+                        minDepth = depth
+    symmetries(tupleBoard, flag)
+    #return False
+    return flag, minDepth+1
 
 def evenTurn(board, oddMoves, evenMoves):
     """return True means odd wins no matter what even move"""
     tupleBoard = tuple(board)
     if tupleBoard in knownBoards:
         return knownBoards[tupleBoard]
+    flag = True
+    maxDepth = -1
     for i in range(9):
         if board[i]==-100:
             for j in evenMoves:
@@ -35,15 +44,18 @@ def evenTurn(board, oddMoves, evenMoves):
                 newboard[i] = j
                 #print newboard
                 if isGameOver(newboard)==1:
-                    symmetries(tupleBoard, False)
-                    return False
+                    #return False
+                    flag = False
                 newoddMoves = oddMoves.copy()
                 newevenMoves = evenMoves-set([j])
-                if oddTurn(newboard, newoddMoves, newevenMoves) is False:
-                    symmetries(tupleBoard, False)
-                    return False
-    symmetries(tupleBoard, True)
-    return True
+                result, depth = oddTurn(newboard, newoddMoves, newevenMoves)
+                if result is False:
+                    flag = False
+                    if depth > maxDepth:
+                        maxDepth = depth
+    symmetries(tupleBoard, flag)
+    #return True
+    return flag, maxDepth
 
 def isGameOver(board):
     """return 0 for unfinished, 1 for win, 2 for tie"""
@@ -94,6 +106,7 @@ def runGame():
             print "No winning strategy for Player 1"
             break
         print p1Moves, p2Moves, oddWin, games
+        break
 
 runGame()
 
